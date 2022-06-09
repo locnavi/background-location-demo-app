@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">background-location-demo-app</string>
+    <string name="server_url">服务器地址</string>
+    <string name="set_url">设置</string>
+    <string name="user_name">用户名</string>
+    <string name="user_id">用户id</string>
+    <string name="login">登入</string>
+    <string name="logout">登出</string>
+    <string name="start_location">开始定位</string>
+    <string name="stop_location">停止定位</string>
+    <string name="start_delivery">开始配送</string>
+    <string name="end_delivery">结束配送</string>
+    <string name="cancel_delivery">取消配送</string>
+
+    <string name="bluetooth_unavailable">蓝牙功能不可用</string>
+    <string name="bluetooth_unavailable_tip">该手机不支持蓝牙，无法使用室内定位功能！</string>
+    <string name="gps_unopen">定位功能未开启</string>
+    <string name="gps_unopen_tip">室内定位需要定位功能开启后使用</string>
+    <string name="tip">提示</string>
+    <string name="tip_set_gps">请在设置->应用->开启定位权限，才能室内定位</string>
+    <string name="tip_set_gps_bg">请在设置->应用->开启背景定位权限，才能做背景室内定位</string>
+
+</resources>
