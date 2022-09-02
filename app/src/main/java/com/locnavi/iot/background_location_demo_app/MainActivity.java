@@ -53,25 +53,16 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
+    private static final int PERMISSION_REQUEST_BLUETOOTH_SCAN = 3;
 
     private void verifyBluetooth() {
         try {
             if (!LocNaviClient.getInstanceForApplication(this).checkAvailability()) {
-                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                boolean isEnabled = bluetoothAdapter.isEnabled();
-                if (!isEnabled) {
-                    //打开蓝牙
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return;
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN},
+                                PERMISSION_REQUEST_BLUETOOTH_SCAN);
                     }
-                    bluetoothAdapter.enable();
                 }
                 // new AlertDialog.Builder(this)
                 //     .setTitle("蓝牙未开启")
@@ -141,9 +132,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                 //未授权或者拒绝的都直接申请，其中拒绝且点击不再提醒的会直接调用回调
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                        PERMISSION_REQUEST_FINE_LOCATION);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                            PERMISSION_REQUEST_FINE_LOCATION);
+                } else {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                            PERMISSION_REQUEST_FINE_LOCATION);
+                }
             }
         }
     }
