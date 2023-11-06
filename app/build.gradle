@@ -3,6 +3,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/zhangty/work/locnavi/android/locnaviKey')
+            keyAlias 'study'
+            keyPassword 'locnavi123'
+            storePassword 'locnavi123'
+        }
+    }
     compileSdk 31
 
     defaultConfig {
@@ -12,6 +20,10 @@ android {
         versionCode 1
         versionName "1.0"
 
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -19,6 +31,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -37,7 +50,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // use jitpack from github
-    implementation 'com.github.locnavi:AndroidLocationOnlineSDK:0.1.4'
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.github.locnavi:AndroidLocationOnlineSDK:0.1.10'
     implementation("com.squareup.okhttp3:okhttp:4.9.2")
     implementation 'org.altbeacon:android-beacon-library:2.19.4'
 }

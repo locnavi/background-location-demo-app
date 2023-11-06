@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">background-location-demo-app</string>
+    <string name="app_name">背景定位Demo</string>
     <string name="server_url">伺服器地址</string>
     <string name="set_url">設置</string>
     <string name="user_name">使用者名稱</string>
