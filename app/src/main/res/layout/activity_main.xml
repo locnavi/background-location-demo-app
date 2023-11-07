@@ -7,83 +7,17 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/buttonStopLocation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
-        android:onClick="onClickStopLocation"
-        android:text="@string/stop_location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonStartLocation"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLoginOut" />
-
-    <Button
         android:id="@+id/buttonStartLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
         android:onClick="onClickStartLocation"
         android:text="@string/start_location"
         app:layout_constraintEnd_toStartOf="@+id/buttonStopLocation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLoginIn" />
-
-    <Button
-        android:id="@+id/buttonLoginIn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:onClick="onClickLoginIn"
-        android:text="@string/login"
-        app:layout_constraintEnd_toStartOf="@+id/buttonLoginOut"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextUserName" />
-
-    <Button
-        android:id="@+id/buttonStart"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:onClick="onClickStart"
-        android:text="@string/start_delivery"
-        app:layout_constraintEnd_toStartOf="@+id/buttonEnd"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStartLocation" />
-
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="30dp"
-        android:onClick="onClickCancel"
-        android:text="@string/cancel_delivery"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
-
-    <Button
-        android:id="@+id/buttonEnd"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
-        android:onClick="onClickEnd"
-        android:text="@string/end_delivery"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonStart"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStopLocation" />
 
     <Button
         android:id="@+id/buttonLoginOut"
@@ -96,6 +30,70 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonLoginIn"
         app:layout_constraintTop_toTopOf="@+id/buttonLoginIn" />
+
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:onClick="onClickStart"
+        android:text="@string/start_delivery"
+        app:layout_constraintEnd_toStartOf="@+id/buttonEnd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonStartLocation" />
+
+    <Button
+        android:id="@+id/buttonEnd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="30dp"
+        android:onClick="onClickEnd"
+        android:text="@string/end_delivery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonStart"
+        app:layout_constraintTop_toTopOf="@+id/buttonStart" />
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="30dp"
+        android:onClick="onClickCancel"
+        android:text="@string/cancel_delivery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
+
+    <Button
+        android:id="@+id/buttonStopLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="30dp"
+        android:onClick="onClickStopLocation"
+        android:text="@string/stop_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonStartLocation"
+        app:layout_constraintTop_toTopOf="@+id/buttonStartLocation" />
+
+    <Button
+        android:id="@+id/buttonLoginIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:onClick="onClickLoginIn"
+        android:text="@string/login"
+        app:layout_constraintEnd_toStartOf="@+id/buttonLoginOut"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextUserName" />
 
     <EditText
         android:id="@+id/editTextTextURL"
@@ -124,14 +122,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="10dp"
         android:ems="10"
         android:hint="@string/user_name"
         android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextURL"
         app:layout_constraintEnd_toStartOf="@+id/editTextUserId"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextURL" />
+         />
 
     <EditText
         android:id="@+id/editTextUserId"
@@ -145,5 +144,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTextUserName"
         app:layout_constraintTop_toTopOf="@+id/editTextUserName" />
+
+    <CheckedTextView
+        android:id="@+id/checkedTextMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="设置定位模式："
+        app:layout_constraintLeft_toLeftOf="@id/editTextTextURL"
+        app:layout_constraintTop_toBottomOf="@id/editTextTextURL" />
+
+    <CheckBox
+        android:id="@+id/checkBoxGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:text="GPS"
+        app:layout_constraintLeft_toRightOf="@id/checkBoxBeacon"
+        app:layout_constraintTop_toTopOf="@id/checkBoxBeacon" />
+
+    <CheckBox
+        android:id="@+id/checkBoxBeacon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:text="蓝牙"
+        app:layout_constraintLeft_toRightOf="@id/checkedTextMode"
+        app:layout_constraintTop_toBottomOf="@id/editTextTextURL" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

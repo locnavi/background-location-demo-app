@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.locnavi.location.online.LocNaviClient;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     EditText editTextURL;
     EditText editTextUserName;
     EditText editTextUserId;
+    CheckBox checkBoxBeacon;
+    CheckBox checkBoxGPS;
+    String locationMode;
 
     protected static final String TAG = "MainActivity";
 
@@ -38,9 +42,15 @@ public class MainActivity extends AppCompatActivity {
         editTextURL = findViewById(R.id.editTextTextURL);
         editTextUserName = findViewById(R.id.editTextUserName);
         editTextUserId = findViewById(R.id.editTextUserId);
+        checkBoxBeacon = findViewById(R.id.checkBoxBeacon);
+        checkBoxGPS = findViewById(R.id.checkBoxGPS);
         editTextURL.setText(Constants.serverUrl);
         editTextUserName.setText(Constants.userName);
         editTextUserId.setText(Constants.userId);
+
+        checkBoxBeacon.setChecked(true);
+        checkBoxGPS.setChecked(true);
+        locationMode = LocNaviConstants.LOCATION_MODE_AUTO;
 
         //初始化SDK
         LocNaviClient client = LocNaviClient.getInstanceForApplication(this);
@@ -58,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     private void verifyBluetooth() {
         try {
             if (!LocNaviClient.getInstanceForApplication(this).checkAvailability()) {
+                checkBoxBeacon.setEnabled(false);
+                checkBoxBeacon.setChecked(false);
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN},
@@ -72,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         catch (RuntimeException e) {
+            checkBoxBeacon.setEnabled(false);
+            checkBoxBeacon.setChecked(false);
             new AlertDialog.Builder(this)
                     .setTitle(R.string.bluetooth_unavailable)
                     .setMessage(R.string.bluetooth_unavailable_tip)
@@ -83,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
     //判断手机定位功能是否开启
     private void verifyLocation() {
         if (!this.isLocationEnabled()) {
+            checkBoxGPS.setChecked(false);
+            checkBoxGPS.setEnabled(false);
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(R.string.gps_unopen)
                     .setMessage(R.string.gps_unopen_tip)
@@ -207,13 +223,22 @@ public class MainActivity extends AppCompatActivity {
     public void onClickStartLocation(View view) {
         Log.d(TAG, "onClickStartLocation");
         LocNaviClient client = LocNaviClient.getInstanceForApplication(this);
-        client.start();
+        if (checkBoxBeacon.isChecked()) {
+            if (checkBoxGPS.isChecked()) {
+                locationMode = LocNaviConstants.LOCATION_MODE_AUTO;
+            } else {
+                locationMode = LocNaviConstants.LOCATION_MODE_ONLY_BEACON;
+            }
+        } else if (checkBoxGPS.isChecked()) {
+            locationMode = LocNaviConstants.LOCATION_MODE_ONLY_GPS;
+        }
+        client.start(locationMode);
     }
 
     public void onClickStopLocation(View view) {
         Log.d(TAG, "onClickStopLocation");
         LocNaviClient client = LocNaviClient.getInstanceForApplication(this);
-        client.stop();
+        client.stop(locationMode);
     }
 
     public void onClickStart(View view) {
