@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.locnavi.location.online.LocNaviClient;
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     CheckBox checkBoxBeacon;
     CheckBox checkBoxGPS;
     String locationMode;
+    //蓝牙定位模式
+    CheckBox checkBLEiBeacon;
+    CheckBox checkBLEBeacon;
 
     protected static final String TAG = "MainActivity";
 
@@ -47,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         editTextURL.setText(Constants.serverUrl);
         editTextUserName.setText(Constants.userName);
         editTextUserId.setText(Constants.userId);
+        checkBLEiBeacon = findViewById(R.id.checkBLEiBeacon);
+        checkBLEBeacon = findViewById(R.id.checkBLEBeacon);
+
 
         checkBoxBeacon.setChecked(true);
         checkBoxGPS.setChecked(true);
@@ -55,6 +62,27 @@ public class MainActivity extends AppCompatActivity {
         //初始化SDK
         LocNaviClient client = LocNaviClient.getInstanceForApplication(this);
         Log.d("App", client.getVersionName());
+
+//        //默认ibeacon模式
+        checkBLEiBeacon.setChecked(true);
+
+        checkBLEiBeacon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d(TAG, "IBEACON" + b);
+                checkBLEBeacon.setChecked(!b);
+                client.setBeaconMode(b ? LocNaviConstants.BEACON_MODE_IBEACON : LocNaviConstants.BEACON_MODE_BEACON);
+            }
+        });
+
+        checkBLEBeacon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d(TAG, "BEACON" + b);
+                checkBLEiBeacon.setChecked(!b);
+                client.setBeaconMode(b ? LocNaviConstants.BEACON_MODE_BEACON : LocNaviConstants.BEACON_MODE_IBEACON);
+            }
+        });
 
         verifyBluetooth();
         verifyLocation();
