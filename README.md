@@ -232,3 +232,75 @@ Android support的項目調用AndroidX提供的aar可能會有問題。我們可
         LocNaviClient client = LocNaviClient.getInstanceForApplication(this);
         client.track(LocNaviConstants.EVENT_CANCEL_DELIVERY, properties);
 ```
+
+## 使用Intent触发消息
+
+通过Intent可以给定位App发送广播事件。
+
+### setBaseUri
+```java
+        Intent intent = new Intent();
+        intent.setAction("com.locanavi.locationonline.broadcast");
+        intent.putExtra("method", "setBaseUri");
+        HashMap params = new HashMap();
+        params.put("uri", "http://192.168.1.1:8000");
+        intent.putExtra("params", params);
+        sendBroadcast(intent);
+```
+
+### 登录、登出
+```java
+        Intent intent = new Intent();
+        intent.setAction("com.locanavi.locationonline.broadcast");
+        intent.putExtra("method", "setUserInfo");
+        HashMap params = new HashMap();
+        //登录
+        params.put("name", "pda");
+        params.put("id", "12345");
+        //登出
+        //params.put("name", null);
+        //params.put("id", null);
+        intent.putExtra("params", params);
+        sendBroadcast(intent);
+```
+
+### 开始定位
+```java
+        Intent intent = new Intent();
+        intent.setAction("com.locanavi.locationonline.broadcast");
+        intent.putExtra("method", "start");
+        HashMap params = new HashMap();
+        params.put("mode", LocNaviConstants.LOCATION_MODE_AUTO);
+        intent.putExtra("params", params);
+        sendBroadcast(intent);
+```
+
+### 停止定位
+```java
+        Intent intent = new Intent();
+        intent.setAction("com.locanavi.locationonline.broadcast");
+        intent.putExtra("method", "stop");
+        HashMap params = new HashMap();
+        params.put("mode", LocNaviConstants.LOCATION_MODE_AUTO);
+        intent.putExtra("params", params);
+        sendBroadcast(intent);
+```
+
+
+### 配送事件
+```java
+        Intent intent = new Intent();
+        intent.setAction("com.locanavi.locationonline.broadcast");
+        intent.putExtra("method", "track");
+
+        HashMap params = new HashMap();
+        //其他的配送事件只需要替换如下内容
+        params.put("event", LocNaviConstants.EVENT_CANCEL_DELIVERY);
+        Map properties = new HashMap();
+        properties.put("DELIVERY_CODE", "12344");
+        properties.put("DEPT_STORE_ID", "568");
+        params.put("properties", properties);
+
+        intent.putExtra("params", params);
+        sendBroadcast(intent);
+```

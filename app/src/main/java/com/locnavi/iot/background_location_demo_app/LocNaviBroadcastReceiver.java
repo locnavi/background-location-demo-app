@@ -11,6 +11,7 @@ import com.locnavi.location.online.LocNaviClient;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class LocNaviBroadcastReceiver extends BroadcastReceiver {
     protected static String TAG = "LocNaviBroadcastReceiver";
@@ -21,22 +22,34 @@ public class LocNaviBroadcastReceiver extends BroadcastReceiver {
 
         Bundle bundle = intent.getExtras();
         String action = intent.getAction();
+        String method = bundle.get("method").toString();
+        HashMap map = (HashMap) bundle.getSerializable("params");
 
 
         Log.d(TAG, "收到通知：" + action);
 
-        if (action.equals("android.intent.action.BATTERY_CHANGED")) {
-            int level = intent.getIntExtra("level", 0);
-            batteryChanged(app, level);
-        } else if (action.equals("com.locanavi.locationonline.setBaseUri")) {
-            String data = bundle.get("data").toString();
-            setBaseUri(client, data);
-        } else if (action.equals("com.locanavi.locationonline.setUserInfo")) {
-            setUserInfo(client, bundle);
-        } else if (action.equals("com.locanavi.locationonline.startLocation")) {
-            startLocation(client, bundle);
-        } else if (action.equals("com.locanavi.locationonline.event")) {
-            trackEvent(client, bundle);
+        try {
+            if (action.equals("android.intent.action.BATTERY_CHANGED")) {
+                int level = intent.getIntExtra("level", 0);
+                batteryChanged(app, level);
+            } else if (action.equals("com.locanavi.locationonline.broadcast")) {
+                if (method.equals("setBaseUri")) {
+                    Object uri = map.get("uri");
+                    client.setBaseUri(uri == null ? null : uri.toString());
+                } else if (method.equals("setUserInfo")) {
+                    Object name = map.get("name");
+                    Object id = map.get("id");
+                    client.setUserInfo(name == null ? null : name.toString(),  id == null ? null : id.toString());
+                } else if (method.equals("start")) {
+                    client.start(map.get("mode").toString());
+                } else if (method.equals("stop")) {
+                    client.stop(map.get("mode").toString());
+                } else if (method.equals("track")) {
+                    client.track(map.get("event").toString(), (Map<String, String>) map.get("properties"));
+                }
+            }
+        } catch (RuntimeException e) {
+
         }
     }
 

@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         checkBLEBeacon = findViewById(R.id.checkBLEBeacon);
 
 
-        checkBoxBeacon.setChecked(true);
-        checkBoxGPS.setChecked(true);
-        locationMode = LocNaviConstants.LOCATION_MODE_AUTO;
+//        checkBoxBeacon.setChecked(true);
+//        checkBoxGPS.setChecked(true);
+//        locationMode = LocNaviConstants.LOCATION_MODE_AUTO;
 
         //初始化SDK
         LocNaviClient client = LocNaviClient.getInstanceForApplication(this);
@@ -79,8 +79,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        verifyBluetooth();
-        verifyLocation();
         requestPermissions();
     }
 
@@ -127,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
             checkBLEiBeacon.setChecked(true);
             client.setBeaconMode(LocNaviConstants.BEACON_MODE_IBEACON);
         }
+
+        verifyBluetooth();
+        verifyLocation();
     }
 
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
@@ -137,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (!LocNaviClient.getInstanceForApplication(this).checkAvailability()) {
                 checkBoxBeacon.setEnabled(false);
-                checkBoxBeacon.setChecked(false);
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN},
@@ -149,11 +149,12 @@ public class MainActivity extends AppCompatActivity {
                 //     .setMessage("室内定位基于蓝牙扫描，请打开蓝牙使用")
                 //     .setPositiveButton(android.R.string.ok, null)
                 //     .show();
+            } else {
+                checkBoxBeacon.setEnabled(true);
             }
         }
         catch (RuntimeException e) {
             checkBoxBeacon.setEnabled(false);
-            checkBoxBeacon.setChecked(false);
             new AlertDialog.Builder(this)
                     .setTitle(R.string.bluetooth_unavailable)
                     .setMessage(R.string.bluetooth_unavailable_tip)
@@ -166,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
     private void verifyLocation() {
         if (!this.isLocationEnabled()) {
             checkBoxGPS.setChecked(false);
-            checkBoxGPS.setEnabled(false);
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setTitle(R.string.gps_unopen)
                     .setMessage(R.string.gps_unopen_tip)
@@ -182,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
                     });
             builder.setCancelable(true);
             builder.show();
+        } else {
+            checkBoxGPS.setEnabled(true);
         }
     }
 
@@ -235,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_FINE_LOCATION: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "定位授权成功");
                 } else {
                     new AlertDialog.Builder(this)
@@ -247,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             case PERMISSION_REQUEST_BACKGROUND_LOCATION: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "背景定位授权成功");
                 } else {
                     new AlertDialog.Builder(this)

@@ -35,10 +35,7 @@
         </activity>
         <receiver android:name=".LocNaviBroadcastReceiver" android:exported="true">
             <intent-filter>
-                <action android:name="com.locanavi.locationonline.setBaseUri" />
-                <action android:name="com.locanavi.locationonline.setUserInfo" />
-                <action android:name="com.locanavi.locationonline.startLocation" />
-                <action android:name="com.locanavi.locationonline.event" />
+                <action android:name="com.locanavi.locationonline.broadcast" />
             </intent-filter>
         </receiver>
     </application>
