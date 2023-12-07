@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.locnavi.location.online.LocNaviClient;
+import com.locnavi.location.online.data.LocNaviDataShare;
 import com.locnavi.location.online.event.LocNaviConstants;
 
 import java.util.HashMap;
@@ -48,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
         editTextUserId = findViewById(R.id.editTextUserId);
         checkBoxBeacon = findViewById(R.id.checkBoxBeacon);
         checkBoxGPS = findViewById(R.id.checkBoxGPS);
-        editTextURL.setText(Constants.serverUrl);
-        editTextUserName.setText(Constants.userName);
-        editTextUserId.setText(Constants.userId);
         checkBLEiBeacon = findViewById(R.id.checkBLEiBeacon);
         checkBLEBeacon = findViewById(R.id.checkBLEBeacon);
 
@@ -62,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
         //初始化SDK
         LocNaviClient client = LocNaviClient.getInstanceForApplication(this);
         Log.d("App", client.getVersionName());
-
-//        //默认ibeacon模式
-        checkBLEiBeacon.setChecked(true);
 
         checkBLEiBeacon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -87,6 +82,51 @@ public class MainActivity extends AppCompatActivity {
         verifyBluetooth();
         verifyLocation();
         requestPermissions();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocNaviClient client = LocNaviClient.getInstanceForApplication(this);
+        //读取本地记录
+        LocNaviDataShare dataShare = LocNaviDataShare.getInstance();
+        dataShare.syncFromLocal();
+
+        editTextUserId.setText(Constants.userId);
+        if (dataShare.baseUri != null) {
+            editTextURL.setText(dataShare.baseUri);
+        } else {
+            editTextURL.setText(Constants.serverUrl);
+        }
+        if (dataShare.userName != null) {
+            editTextUserName.setText(dataShare.userName);
+        } else {
+            editTextUserName.setText(Constants.userName);
+        }
+        if (dataShare.userId != null) {
+            editTextUserId.setText(dataShare.userId);
+        } else {
+            editTextUserId.setText(Constants.userId);
+        }
+        locationMode = dataShare.locationMode != null ? dataShare.locationMode : LocNaviConstants.LOCATION_MODE_AUTO;
+        if (locationMode == LocNaviConstants.LOCATION_MODE_ONLY_BEACON) {
+            checkBoxBeacon.setChecked(true);
+            checkBoxGPS.setChecked(false);
+        } else if (locationMode == LocNaviConstants.LOCATION_MODE_ONLY_BEACON) {
+            checkBoxBeacon.setChecked(false);
+            checkBoxGPS.setChecked(true);
+        } else {
+            checkBoxBeacon.setChecked(true);
+            checkBoxGPS.setChecked(true);
+        }
+        if (dataShare.beaconMode == LocNaviConstants.BEACON_MODE_BEACON) {
+            checkBLEBeacon.setChecked(true);
+            client.setBeaconMode(LocNaviConstants.BEACON_MODE_BEACON);
+        } else {
+            //默认ibeacon模式
+            checkBLEiBeacon.setChecked(true);
+            client.setBeaconMode(LocNaviConstants.BEACON_MODE_IBEACON);
+        }
     }
 
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
